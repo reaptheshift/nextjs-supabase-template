@@ -12,9 +12,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Stack
 
-- Next.js App Router + TypeScript + Tailwind + shadcn/ui
+- Target: Next.js App Router + TypeScript + Tailwind + shadcn/ui + Supabase
+- This clone may be **guidance-only** until `/setup-project` creates the app
 - Package manager: **pnpm** — use `pnpm add`, `pnpm exec`, `pnpm dlx`; never npm, npx, or yarn
-- Supabase when present (see **server** rule; vendor skills installed via `/setup-project`)
+- Supabase + vendor skills: installed via `/setup-project` (see **server** rule)
 
 ## Always-on principles
 
@@ -33,9 +34,9 @@ Follow `.cursor/rules/general/` — **code-writing**, **simplicity**, **folder-s
 | `logging`          | Server / Edge logging                                                                                                   |
 | `testing`          | Vitest / Playwright pyramid                                                                                             |
 | `feature-docs`     | `docs/features/` documentation                                                                                          |
-| `project-setup`    | `/setup-project` — git init, refresh stack, Prettier+Tailwind, lint boundaries, vendor skills, Supabase dual-cloud note |
+| `project-setup`    | `/setup-project` — from empty pack: create Next app, shadcn, Supabase, Prettier, boundaries, vendor skills, extensions ask, dual-cloud note |
 
-Vendor skills (`shadcn`, `supabase`, `supabase-postgres-best-practices`, `vercel-react-best-practices`, `web-design-guidelines`, `find-skills`) are installed fresh by `/setup-project` and referenced **by name only**.
+Vendor skills (`shadcn`, `supabase`, `supabase-postgres-best-practices`, `vercel-react-best-practices`, `web-design-guidelines`, `find-skills`) are **not** in the empty template—installed fresh by `/setup-project` and referenced **by name only**.
 
 ## Agents
 

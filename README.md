@@ -1,205 +1,133 @@
-# Next.js + Supabase template
+# Next.js + Supabase guidance pack
 
-Public **Cursor-first** starter for MVP apps on **Next.js App Router**, **TypeScript**, **Tailwind**, **shadcn/ui**, and **Supabase**.
+**Cursor-first** template for MVP apps: **rules, skills, agents, and commands**—not a pre-built Next.js app.
 
-The app scaffold is intentionally thin. The real product is the **guidance pack**: rules, skills, agents, and slash commands that keep AI coding fast, consistent, and safe for small teams shipping features.
+Use this repo as a **GitHub template** (or clone) → open in Cursor → run **`/setup-project`**. That command creates the app and installs the stack.
 
-Use this repo as a **GitHub template** → open in Cursor → run `/setup-project`.
+## What this is
 
-## What this is for
-
-- Greenfield or early-stage products where agents do most of the implementation
-- Teams that want **one stack opinion** instead of rediscovering structure every chat
-- MVPs on Supabase **free plan** (local + two cloud projects—no Pro branching required)
+| Ships in the template | Created by `/setup-project` |
+| --- | --- |
+| `.cursor/` rules, project skills, agents, commands | Next.js App Router + TypeScript + Tailwind |
+| `AGENTS.md` | shadcn/ui init |
+| `docs/agents/` | Supabase clients (+ optional `supabase init`) |
+| `.vscode/` recommendations | Prettier, ESLint boundaries, env stubs |
+| This README | Vendor skills (`shadcn`, `supabase`, …) |
+| | Editor extensions (asks first) |
 
 ## How it helps
 
 | Layer | Job |
 | --- | --- |
-| **Rules** (`.cursor/rules/`) | Always-on or path-scoped constraints the model must follow |
-| **Skills** (`.cursor/skills/`) | Deep how-to for a task (loaded when relevant) |
-| **Agents** (`.cursor/agents/`) | Named roles: plan, review, security, tests, UI QA, git, orchestrate |
-| **Commands** (`.cursor/commands/`) | Slash entry points that invoke the right agent/skill |
-| **AGENTS.md** | Stack map + skill/agent index every session can see |
+| **Rules** | Rails the model must follow |
+| **Skills** | Playbooks for a task (project-owned here; vendor installed on setup) |
+| **Agents** | Specialists: plan, review, security, tests, UI QA, git, orchestrate |
+| **Commands** | Slash entry points |
+| **AGENTS.md** | Stack map every session can see |
 
-**Mental model:** rules = rails; skills = playbooks; agents = specialists; commands = buttons; orchestrator = which specialists to run after you manually tested a change.
-
----
-
-## Stack
-
-- **Next.js** App Router + React + TypeScript
-- **pnpm** only (`pnpm add` / `exec` / `dlx` — never npm/npx/yarn)
-- **Tailwind CSS** + **Prettier** (`prettier-plugin-tailwindcss`)
-- **shadcn/ui** (`components.json` present)
-- **Supabase** client packages included; CLI + project wiring via `/setup-project`
-- **ESLint** + `eslint-plugin-boundaries` (features cannot import other features)
-
----
-
-## General thinking (defaults)
-
-1. **Simplicity first** — obvious over clever; no architecture “for later”; delete dead code with the change.
-2. **Feature ownership** — business capability lives in `src/features/<name>/`; ask for the feature name before creating one; promote to `src/` only when 2+ features need it.
-3. **Visible vs invisible backend**
-   - User-triggered CRUD / forms → **Next.js** (Server Actions, thin APIs, feature `server/`)
-   - Webhooks, provider callbacks, cron, background jobs → **Supabase** (Edge Functions, triggers, `pg_cron`) — not Vercel routes “so the UI updates faster”
-4. **Job UI sync** — DB row is source of truth; **short-poll / refetch** while pending; Realtime only when polling is clearly worse.
-5. **Env promote** — **local → staging → production**; never skip straight to production.
-6. **Staged validation** — plan before big work; light lint/typecheck while building; full agent set only after you have manually tested (orchestrator recommends the minimum set).
-7. **Evidence** — agents cite real files; missing tools → `tool_not_available`, never a fake pass.
-
-Details: `.cursor/rules/general/*`, `docs/agents/conventions.md`.
-
----
-
-## Supabase: three environments (free-plan MVP)
-
-Do **not** depend on Supabase Pro branching. Use:
-
-| Environment | What |
-| --- | --- |
-| **Local** | `supabase start` on your machine |
-| **Staging** | Separate **cloud** Supabase project |
-| **Production** | Separate **cloud** Supabase project |
-
-- Same **names** in `.env.example` / `src/lib/env.ts`; different **values** per host env
-- Migrate **local → staging → production** (never production first)
-- Secrets in `.env.local` (gitignored); names only in `.env.example`
-- RLS on exposed tables; no service-role clients in `"use client"` modules
-
-`/setup-project` (or `/setup-project supabase`) walks the dual-cloud checklist and refreshes Supabase vendor skills.
-
----
-
-## Rules (`.cursor/rules/`)
-
-### Always-on (`alwaysApply`)
-
-| Rule | Purpose |
-| --- | --- |
-| `general/code-writing` | Structure, naming, function declarations, ask-first on ambiguity |
-| `general/simplicity` | No overstructure; colocate until a second consumer |
-| `general/folder-structure` | `app` vs `features` vs shared; kebab-case; no feature→feature imports |
-| `general/workflow` | Stages A/B/C, feature README hubs, promote discipline |
-| `general/backend-placement` | Visible → Next; invisible → Supabase; poll default |
-| `nextjs-docs` | Read installed Next docs before App Router / cache / actions changes |
-
-### Path-scoped
-
-| Rule | When |
-| --- | --- |
-| `frontend` | `src/**/*.tsx` — RSC, skeletons, optimistic UI, shadcn, Tailwind scale |
-| `server` | Server/API/Supabase paths — Zod, logging, RLS, dual-cloud |
-| `tests` | Test files / gates |
-| `general/env-vars` | Env files / `env.ts` / next config |
-| `meta/authoring` | Editing rules/skills/agents themselves |
-
-Entry index for agents: **`AGENTS.md`**.
-
----
-
-## Skills (`.cursor/skills/`)
-
-### Project skills (owned by this template)
-
-| Skill | Use when |
-| --- | --- |
-| `project-setup` | `/setup-project` — git, pnpm, stack refresh, Prettier, boundaries, vendor skills, Supabase checklist |
-| `folder-structure` | Where a file belongs (beyond the short rule) |
-| `components` | `.tsx` design, RSC split, a11y |
-| `skeleton-loading` | `loading.tsx` / Suspense skeletons |
-| `optimistic-ui` | Instant Server Action feedback |
-| `validation` | Zod schemas + server parse |
-| `logging` | Server / Edge logging |
-| `testing` | Vitest / Playwright pyramid |
-| `feature-docs` | `docs/features/<slug>/README.md` hubs |
-| `nextjs-docs` | Installed Next.js docs + deprecations |
-
-### Vendor skills (refreshed by `/setup-project`)
-
-| Skill | Source intent |
-| --- | --- |
-| `shadcn` | Official shadcn CLI / composition |
-| `supabase` | Supabase platform patterns |
-| `supabase-postgres-best-practices` | Postgres / RLS / indexes |
-| `vercel-react-best-practices` | React/Next performance |
-| `web-design-guidelines` | UI quality checklist |
-| `find-skills` | Discover additional skills |
-
-Reference vendor skills **by name**; reinstall fresh on setup—do not hand-edit upstream content.
-
----
-
-## Agents (`.cursor/agents/`)
-
-Shared conventions: [`docs/agents/conventions.md`](docs/agents/conventions.md). Preferences: `.cursor/validation-preferences.yaml`.
-
-| Agent | Role |
-| --- | --- |
-| `planner` | **profile** / **feature** / **plan** — docs only, no app source |
-| `reviewer` | Lint, typecheck, maintainability, rules/skills compliance |
-| `security-auditor` | Secrets, RLS, authz, validation, server/client boundary |
-| `tests` | Run Vitest/Playwright, or write E2E after gates |
-| `ui-qa` | Visual, responsive, a11y, optional Figma / runtime perf |
-| `git-agent` | Status / commit / push / deploy — confirms each step |
-| `orchestrator` | Recommends minimum validation set; runs approved agents; always writes `pipeline-reports/` |
-
-**Typical loop:** planner → implement → you click through the UI → `/validate` (orchestrator) → fix failures → `/commit`.
-
----
-
-## Commands (`.cursor/commands/`)
-
-| Command | Invokes |
-| --- | --- |
-| `/setup-project` | project-setup (full / skills / supabase) |
-| `/plan-feature` | planner |
-| `/review` | reviewer |
-| `/security-audit` | security-auditor |
-| `/run-tests` | tests (run) |
-| `/build-e2e-tests` | tests (write-e2e) |
-| `/ui-qa` | ui-qa |
-| `/validate` | orchestrator |
-| `/commit` · `/push` · `/deploy-staging` | git-agent |
+**Mental model:** rules = rails · skills = playbooks · agents = specialists · commands = buttons · `/setup-project` = build the runnable app from this pack.
 
 ---
 
 ## Quick start
 
-1. Click **Use this template** on GitHub (or clone).
+1. **Use this template** on GitHub (or clone).
 2. Open the folder in **Cursor**.
-3. Install deps: `pnpm install`
-4. Run **`/setup-project`** — refreshes the stack, Prettier+Tailwind plugin, boundaries, vendor skills; asks before installing recommended VS Code/Cursor extensions.
-5. Copy `.env.example` → `.env.local` and fill Supabase local (then staging/production host envs).
+3. Run **`/setup-project`** (full).
+4. Approve extensions you want when asked.
+5. Copy `.env.example` → `.env.local` and fill Supabase values.
 6. `pnpm dev`
 
-Editor recommendations live in `.vscode/extensions.json` (Tailwind, Prettier, Material Icon Theme, etc.). Setup asks before installing any of them.
+Modes: `/setup-project` · `/setup-project skills` · `/setup-project supabase`.
 
 ---
 
-## Repo layout (what to keep)
+## Stack (after setup)
 
-```
-AGENTS.md                 # Agent entry map
-CLAUDE.md                 # Points at AGENTS.md
-README.md                 # This file
-.cursor/
-  rules/                  # Rails
-  skills/                 # Playbooks
-  agents/                 # Specialists
-  commands/               # Slash commands
-  validation-preferences.yaml
-docs/agents/              # Shared agent conventions
-src/app/                  # Thin App Router shell
-src/lib/utils.ts          # shadcn `cn` helper
-.env.example              # Env names only
-```
-
-Product features go under `src/features/<feature>/` after you name them. Validation artifacts under `pipeline-reports/` are gitignored.
+- Next.js App Router + React + TypeScript
+- **pnpm** only
+- Tailwind + Prettier (`prettier-plugin-tailwindcss`)
+- shadcn/ui
+- Supabase (`@supabase/ssr` + js client; local + two cloud projects)
+- ESLint + `eslint-plugin-boundaries`
 
 ---
 
-## License / intent
+## General thinking
 
-Starter template for shipping MVPs with agent discipline. Fork it, tighten rules for your team, and keep `/setup-project` in the loop so vendor skills and packages stay current.
+1. **Simplicity** — obvious over clever; no architecture “for later.”
+2. **Feature ownership** — `src/features/<name>/`; ask for the name before creating; promote to `src/` only when 2+ features need it.
+3. **Visible vs invisible backend** — user CRUD → Next; webhooks/cron/jobs → Supabase. Job UI: poll/refetch the DB row (Realtime opt-in).
+4. **Env promote** — local → staging → production; never skip to production.
+5. **Staged validation** — plan → build with light checks → after you manually test, `/validate` (orchestrator).
+6. **Evidence** — agents cite real files; missing tools → `tool_not_available`.
+
+---
+
+## Supabase: three environments (free-plan MVP)
+
+| Env | What |
+| --- | --- |
+| **Local** | `supabase start` |
+| **Staging** | Separate cloud Supabase project |
+| **Production** | Separate cloud Supabase project |
+
+Same env **names**; different **values** per host. Migrate local → staging → production.
+
+---
+
+## Rules (`.cursor/rules/`)
+
+**Always-on:** `code-writing`, `simplicity`, `folder-structure`, `workflow`, `backend-placement`, `nextjs-docs`.
+
+**Path-scoped:** `frontend`, `server`, `tests`, `env-vars`, `meta/authoring`.
+
+---
+
+## Skills
+
+### Project-owned (in this template)
+
+`project-setup` · `folder-structure` · `components` · `skeleton-loading` · `optimistic-ui` · `validation` · `logging` · `testing` · `feature-docs` · `nextjs-docs`
+
+### Vendor (installed by `/setup-project`)
+
+`shadcn` · `supabase` · `supabase-postgres-best-practices` · `vercel-react-best-practices` · `web-design-guidelines` · `find-skills`
+
+---
+
+## Agents
+
+Shared: [`docs/agents/conventions.md`](docs/agents/conventions.md). Preferences: `.cursor/validation-preferences.yaml`.
+
+| Agent | Role |
+| --- | --- |
+| `planner` | profile / feature / plan |
+| `reviewer` | lint, typecheck, compliance |
+| `security-auditor` | secrets, RLS, authz, validation |
+| `tests` | run / write-e2e |
+| `ui-qa` | visual, a11y, perf |
+| `git-agent` | commit / push / deploy (confirm each step) |
+| `orchestrator` | minimum validation set + `pipeline-reports/` |
+
+---
+
+## Commands
+
+`/setup-project` · `/plan-feature` · `/review` · `/security-audit` · `/run-tests` · `/build-e2e-tests` · `/ui-qa` · `/validate` · `/commit` · `/push` · `/deploy-staging`
+
+---
+
+## What stays in git (template)
+
+```
+.cursor/          # rules, project skills, agents, commands
+.vscode/          # extension + format recommendations
+AGENTS.md
+CLAUDE.md
+README.md
+docs/agents/
+.gitignore
+```
+
+App files (`package.json`, `src/`, lockfiles, `skills-lock.json`, vendor skills under `.cursor/skills/`) appear **after** `/setup-project` and belong in your product repo—not in this empty template.

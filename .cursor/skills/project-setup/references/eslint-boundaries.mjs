@@ -3,13 +3,13 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import boundaries from "eslint-plugin-boundaries";
 
+/** Copy into repo-root `eslint.config.mjs` during /setup-project (merge if Next already wrote one). */
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
     plugins: { boundaries },
     settings: {
-      // Silence v6→v7 migration noise until patterns are rewritten for the entity model
       "boundaries/legacy-warnings": false,
       "boundaries/include": ["**/*"],
       "boundaries/elements": [

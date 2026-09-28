@@ -6,7 +6,6 @@ const config = {
   printWidth: 80,
   tabWidth: 2,
   plugins: ["prettier-plugin-tailwindcss"],
-  // Keep last so class sorting runs after other transforms
   tailwindStylesheet: "./src/app/globals.css",
   tailwindFunctions: ["cn", "cva"],
 };
