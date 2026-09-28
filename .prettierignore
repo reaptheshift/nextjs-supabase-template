@@ -1,0 +1,26 @@
+# dependencies & build
+node_modules
+.next
+out
+build
+dist
+coverage
+pipeline-reports
+
+# locks & generated
+pnpm-lock.yaml
+package-lock.json
+next-env.d.ts
+*.tsbuildinfo
+
+# env
+.env*
+
+# skills CLI staging + vendor skills (format only project-owned code)
+.agents
+.cursor/skills/shadcn
+.cursor/skills/vercel-react-best-practices
+.cursor/skills/web-design-guidelines
+.cursor/skills/find-skills
+.cursor/skills/supabase
+.cursor/skills/supabase-postgres-best-practices

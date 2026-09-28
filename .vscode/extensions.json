@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "stivo.tailwind-fold",
+    "oderwat.indent-rainbow",
+    "mechatroner.rainbow-csv",
+    "esbenp.prettier-vscode",
+    "PKief.material-icon-theme",
+    "donjayamanne.githistory",
+    "mikestead.dotenv",
+    "pranaygp.vscode-css-peek",
+    "formulahendry.auto-rename-tag"
+  ]
+}

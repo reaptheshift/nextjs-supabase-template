@@ -1,0 +1,32 @@
+---
+description: Environment variables—one name, Zod in env.ts, .env.local secrets, concise .env.example, promote local→staging→production
+globs: "{src/lib/env*,.env*,next.config.*}"
+alwaysApply: false
+---
+
+# Environment variables
+
+## Files
+
+- **Secrets / local values:** `.env.local` (gitignored)—never commit
+- **Documented names:** always maintain `.env.example` (no real secrets)
+- Parse only via `src/lib/env.ts` with Zod (**validation** skill)
+
+## One name only
+
+- One canonical name per setting; no `process.env.A || process.env.B`
+- Never prefix secrets with `NEXT_PUBLIC_`; never import server env from `"use client"`
+
+## `.env.example` style
+
+- Short and scannable: `NAME=` plus optional placeholder
+- Comments only to **group** related vars (e.g. `# Auth`, `# Supabase`)—not feature essays
+- Fail fast on missing required keys; errors name the exact variable
+
+## Promote environments
+
+Order: **local → staging → production**.
+
+- Small/sure work may skip local and land on **staging** first
+- **Never** skip straight to **production**
+- Tell the user exact name, where to set it (`.env.local` / host staging / host production), and server vs `NEXT_PUBLIC_`

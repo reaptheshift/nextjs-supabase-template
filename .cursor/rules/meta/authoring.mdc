@@ -1,0 +1,33 @@
+---
+description: How to write concise Cursor rules, skills, agents, and commands in this repo
+globs: "{.cursor/**,AGENTS.md,docs/agents/**}"
+alwaysApply: false
+---
+
+# Authoring guidance
+
+## Division of work
+
+| Kind | Job | Limit |
+|------|-----|-------|
+| **Rule** | Short constraints that must hold | ≤50 lines, one concern, concrete good/bad examples |
+| **Skill** | How-to knowledge loaded on demand | `SKILL.md` ≤200 lines; details in `references/` |
+| **Agent** | One role, clear scope, fixed output | Shared text in `docs/agents/conventions.md` |
+| **Command** | Starts one agent or mode | 3–5 lines |
+
+## Frontmatter
+
+- **Rule:** `description`, `alwaysApply` and/or `globs`
+- **Skill:** `name` (kebab-case), third-person `description` with WHAT + WHEN; optional `disable-model-invocation: true`
+- **Agent:** `name`, third-person `description`
+- Do **not** use unsupported skill fields like `paths:`
+
+## No duplication
+
+- Rules must not paste skill content. State the hard constraint once; name the skill for details.
+- Do not add "if the skill is not loaded" fallback copies.
+- One term per concept: statuses `PASS | WARN | FAIL | BLOCKED`; agents `planner`, `reviewer`, `security-auditor`, `tests`, `ui-qa`, `git-agent`, `orchestrator`.
+
+## Vendor skills
+
+Project guidance mentions vendor skills **by name only**. Install/refresh via `/setup-project` (see `project-setup` skill)—never hand-copy vendor folders into `.cursor/skills/`.

@@ -1,0 +1,27 @@
+---
+description: Invisible backend on Supabase; UI-driven work on Next; webhooks/cron never on Vercel for UI sync
+alwaysApply: true
+---
+
+# Backend placement (visible vs invisible)
+
+## Test
+
+- **User-driven / visible** (button, form, CRUD they just triggered) → Next.js is fine (Server Actions, thin APIs, feature `server/`).
+- **Invisible / external / scheduled** (webhooks, provider callbacks, cron, background jobs) → **Supabase** (Edge Functions, DB triggers, `pg_cron`)—not Next.js/Vercel routes.
+
+## Webhooks and long jobs
+
+Stripe, Postmark, parsers, and similar: webhook **always** lands on Supabase. Verify → update the job/row in the DB. Do **not** put the listener on Vercel so the UI can “update faster.”
+
+**UI sync (project default):** the DB row is the source of truth. While pending, **short-poll / refetch** that row (interval, `router.refresh`, or query `refetchInterval`); **stop** on done/failed. Do **not** default to Supabase Realtime.
+
+**Realtime:** opt-in only when polling is clearly worse (many clients, long waits, collaborative UIs)—never as the reason to move the webhook.
+
+## Cron
+
+Prefer Supabase schedules over Vercel cron for backend-only work.
+
+## Still on Next
+
+RSC page data, auth cookie/`@supabase/ssr` wiring, Server Actions that mutate then revalidate for the current screen. Next calls Supabase; it does not reimplement webhooks or cron.

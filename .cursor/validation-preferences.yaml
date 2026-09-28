@@ -1,0 +1,78 @@
+# Validation preferences — read by orchestrator and validation agents.
+# Missing keys → safe defaults (recommend rather than force).
+
+validation_preferences:
+  auto_run_lightweight_checks:
+    - lint
+    - typecheck
+
+  recommend_validation_for:
+    - new_feature
+    - figma_based_feature
+    - major_refactor
+    - integration
+    - server_side_logic
+    - database_change
+
+  require_manual_user_review_before_final_validation: true
+  require_visual_qa_before_e2e_generation: true
+  require_manual_user_approval_before_e2e_generation: true
+
+  browser_coverage:
+    chromium: full
+    firefox: critical_paths
+    webkit: critical_paths
+
+  # Heights: phones 844, tablets 1024, desktop 900 (see ui-qa agent)
+  viewport_matrix:
+    full:
+      [
+        360,
+        375,
+        390,
+        414,
+        478,
+        512,
+        578,
+        600,
+        700,
+        768,
+        800,
+        900,
+        991,
+        1024,
+        1280,
+        1440,
+        1500,
+        1700,
+        1920,
+      ]
+    targeted: [375, 390, 414, 800, 1024, 1440, 1920]
+    shell_sidebar_min_width: 1024
+
+  release_validation:
+    include_compliance_audit: true
+    include_performance_check: true
+
+  a11y_severity: advisory
+
+  git:
+    # Early / pre-hosting: working on main is fine.
+    # Before real staging/production hosts (Vercel, Cloudflare, etc.): ask the user
+    # to split — main = release-ready, staging = active work.
+    early_work_on_main: true
+    ask_to_split_branches_before_prod_hosting: true
+    default_working_branch: main
+    staging_branch: staging
+    protected_branches: [master, main]
+    require_explicit_confirmation_before_stage: true
+    require_explicit_confirmation_before_commit: true
+    require_explicit_confirmation_before_push: true
+    require_explicit_confirmation_before_deploy: true
+    # Deploy / env promote: local → staging → production; never straight to production.
+    env_promote_order: [local, staging, production]
+    allow_skip_local_to_staging: true
+    allow_skip_to_production: false
+
+  reports_dir: pipeline-reports
+  screenshots_dir: pipeline-reports/screenshots
