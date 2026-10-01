@@ -1,16 +1,32 @@
 # Next.js + Supabase guidance pack
 
-**Cursor-first** template for MVP apps: **rules, skills, agents, and commands**—not a pre-built Next.js app.
+Multi-agent template for MVP apps: **rules, skills, agents, and commands** for both **Claude Code** and **Cursor**—not a pre-built Next.js app.
 
-Use this repo as a **GitHub template** (or clone) → open in Cursor → run **`/setup-project`**. That command creates the app and installs the stack.
+Use this repo as a **GitHub template** (or clone) → open in Claude Code or Cursor → run **`/setup-project`**. That command creates the app and installs the stack.
+
+## Claude Code and Cursor
+
+The pack ships two **independent** setups with the same rules, skills, agents, and commands. They work side by side—teammates can use either tool on the same repo—and nothing is linked or synced between them.
+
+| Tool            | Entry point | Setup folder | Agent conventions        | Preferences                          |
+| --------------- | ----------- | ------------ | ------------------------ | ------------------------------------ |
+| **Claude Code** | `CLAUDE.md` | `.claude/`   | `.claude/conventions.md` | `.claude/validation-preferences.yaml` |
+| **Cursor**      | `AGENTS.md` | `.cursor/`   | `docs/agents/conventions.md` | `.cursor/validation-preferences.yaml` |
+
+**Only using one tool?** Delete the other one's files—you keep every rule, skill, agent, and command:
+
+- Claude Code only → delete `.cursor/`, `AGENTS.md`, `docs/agents/`
+- Cursor only → delete `.claude/`, `CLAUDE.md`
+
+**Using both?** An edit on one side does not reach the other. Change both when you want them to stay in step.
 
 ## What this is
 
 | Ships in the template | Created by `/setup-project` |
 | --- | --- |
-| `.cursor/` rules, project skills, agents, commands | Next.js App Router + TypeScript + Tailwind |
-| `AGENTS.md` | shadcn/ui init |
-| `docs/agents/` | Supabase clients (+ optional `supabase init`) |
+| `.claude/` + `CLAUDE.md` (Claude Code) | Next.js App Router + TypeScript + Tailwind |
+| `.cursor/` + `AGENTS.md` + `docs/agents/` (Cursor) | shadcn/ui init |
+| Rules, project skills, agents, commands (in each setup) | Supabase clients (+ optional `supabase init`) |
 | `.vscode/` recommendations | Prettier, ESLint boundaries, env stubs |
 | This README | Vendor skills (`shadcn`, `supabase`, …) |
 | | Editor extensions (asks first) |
@@ -23,7 +39,7 @@ Use this repo as a **GitHub template** (or clone) → open in Cursor → run **`
 | **Skills** | Playbooks for a task (project-owned here; vendor installed on setup) |
 | **Agents** | Specialists: plan, review, security, tests, UI QA, git, orchestrate |
 | **Commands** | Slash entry points |
-| **AGENTS.md** | Stack map every session can see |
+| **CLAUDE.md / AGENTS.md** | Stack map every session can see |
 
 **Mental model:** rules = rails · skills = playbooks · agents = specialists · commands = buttons · `/setup-project` = build the runnable app from this pack.
 
@@ -32,7 +48,7 @@ Use this repo as a **GitHub template** (or clone) → open in Cursor → run **`
 ## Quick start
 
 1. **Use this template** on GitHub (or clone).
-2. Open the folder in **Cursor**.
+2. Open the folder in **Claude Code** or **Cursor** (optionally delete the other tool's files—see *Claude Code and Cursor*).
 3. Run **`/setup-project`** (full).
 4. Approve extensions you want when asked.
 5. Copy `.env.example` → `.env.local` and fill Supabase values.
@@ -76,7 +92,7 @@ Same env **names**; different **values** per host. Migrate local → staging →
 
 ---
 
-## Rules (`.cursor/rules/`)
+## Rules (`.claude/rules/` · `.cursor/rules/`)
 
 **Always-on:** `code-writing`, `simplicity`, `folder-structure`, `workflow`, `backend-placement`, `nextjs-docs`.
 
@@ -98,7 +114,7 @@ Same env **names**; different **values** per host. Migrate local → staging →
 
 ## Agents
 
-Shared: [`docs/agents/conventions.md`](docs/agents/conventions.md). Preferences: `.cursor/validation-preferences.yaml`.
+Conventions: `.claude/conventions.md` (Claude Code) · [`docs/agents/conventions.md`](docs/agents/conventions.md) (Cursor). Preferences: `validation-preferences.yaml` inside each setup folder.
 
 | Agent | Role |
 | --- | --- |
@@ -121,7 +137,8 @@ Shared: [`docs/agents/conventions.md`](docs/agents/conventions.md). Preferences:
 ## What stays in git (template)
 
 ```
-.cursor/          # rules, project skills, agents, commands
+.claude/          # Claude Code: rules, project skills, agents, commands
+.cursor/          # Cursor: rules, project skills, agents, commands
 .vscode/          # extension + format recommendations
 AGENTS.md
 CLAUDE.md
@@ -130,4 +147,4 @@ docs/agents/
 .gitignore
 ```
 
-App files (`package.json`, `src/`, lockfiles, `skills-lock.json`, vendor skills under `.cursor/skills/`) appear **after** `/setup-project` and belong in your product repo—not in this empty template.
+App files (`package.json`, `src/`, lockfiles, `skills-lock.json`, vendor skills under `.claude/skills/` or `.cursor/skills/`) appear **after** `/setup-project` and belong in your product repo—not in this empty template.
