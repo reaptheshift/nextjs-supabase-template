@@ -1,0 +1,19 @@
+---
+description: Server, API, and Supabase—Zod, logging, RLS, dual cloud projects on free plan
+paths:
+  - "src/server/**"
+  - "src/features/**/server/**"
+  - "src/features/**/lib/**"
+  - "src/app/api/**"
+  - "src/lib/supabase/**"
+  - "supabase/**"
+---
+
+# Server & data
+
+- **Validation:** Zod schemas in feature `lib/` (or promoted `src/lib/`). `safeParse` on the server before DB/side effects. Return `{ ok: false, error }` for invalid input—do not throw for expected validation failures. Skill: `validation`.
+- **Logging:** use `createLogger` from `@/lib/logger` once it exists. Log start, validation outcome, success when useful, and errors. No secrets. Skill: `logging`.
+- **Routes:** thin `src/app/api/**`; logic in `src/features/<f>/server/`.
+- **Supabase** (when present): enable RLS on exposed tables; no service-role / server-only clients in `"use client"` modules. Skills (if installed): `supabase` → `supabase-postgres-best-practices`. Pair with the `validation` and `logging` skills.
+- **Supabase envs (MVP / free plan):** local + two cloud projects (staging, production)—no Pro branching. Migrate local → staging → production.
+- **Placement:** invisible work (webhooks, cron, provider callbacks) → Supabase; user-driven CRUD/UI actions → Next. See `backend-placement` rule.

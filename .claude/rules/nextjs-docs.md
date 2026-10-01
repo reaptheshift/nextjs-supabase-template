@@ -1,0 +1,16 @@
+---
+description: Doc-first Next.js—read version-matched official docs before App Router APIs
+---
+
+# Next.js docs
+
+**Skip** when editing only `.claude/`, `CLAUDE.md`.
+
+Before changing App Router, Server Actions, caching, middleware, or data fetching:
+
+1. Follow the `nextjs-docs` skill
+2. Prefer `node_modules/next/dist/docs/` (matches installed `next`)
+3. If needed: MCP `nextjs-docs://llms-index` then `nextjs_docs` with an exact path
+4. Project skills (`folder-structure`, `components`) win when stricter
+
+Do not rely on training-data defaults. Flag deprecated patterns and use the documented replacement.

@@ -1,0 +1,41 @@
+---
+description: Always-on file placement—ownership, promotion, features, imports, no route barrels
+---
+
+# Folder structure
+
+Details and examples: `folder-structure` skill → `references/folders.md`.
+
+## Ownership
+
+- `src/app` — routing + scannable composition only (`page` / `layout` / `loading` / `error` / API routes). Heavy UI and logic live in features.
+- `src/features/<feature>/` — one business capability
+- Shared when **2+ features** need it: `src/{components,hooks,lib,server,types,utils,styles}/`
+
+## Feature template (mandatory)
+
+```
+src/features/<feature>/{components,hooks,lib,server,types,utils,tests}/
+```
+
+Ask the user for feature names before creating features. Never invent them.
+
+## Promotion
+
+One feature only → feature folder. Two or more (or no domain) → top-level `src/<folder>/`. Shared UI without domain → `src/components/{ui,composites,layout}/`.
+
+## Imports
+
+A feature may import itself, `src/components/**`, and shared `src/{lib,hooks,server,types,utils}/`. Features must **never** import other features. A boundaries lint error means the file is in the wrong layer—move or promote it; never disable the rule.
+
+## Routes
+
+`page.tsx` is the screen map: compose feature leaves and Suspense islands. No **route barrels** (pass-through wrappers that only fetch then return one child). Thin API handlers; logic in feature `server/`.
+
+## Naming
+
+All files and folders: **kebab-case**. Component exports: **PascalCase** (`components` skill).
+
+## Primitives
+
+shadcn primitives only in `src/components/ui/` via CLI (`pnpm dlx shadcn@latest add`). No business logic in `ui/`.
